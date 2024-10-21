@@ -15,3 +15,8 @@ hello = "ytxd:hello"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.7.0",
+]
