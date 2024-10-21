@@ -1,0 +1,12 @@
+/src/ytxd/__pycache__
+
+# audio formats
+*.mp3
+*.m4a
+*.flac
+*.wav
+
+# video formats
+*.mp4
+*.mkv
+*.webm
