@@ -4,19 +4,14 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-    "typer>=0.12.5",
-    "yt-dlp>=2024.10.7",
-]
+dependencies = ["typer>=0.12.5", "yt-dlp>=2024.10.7"]
 
 [project.scripts]
-hello = "ytxd:hello"
+ytxd = "ytxd.main:app"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv]
-dev-dependencies = [
-    "ruff>=0.7.0",
-]
+dev-dependencies = ["ruff>=0.7.0"]
