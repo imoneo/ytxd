@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "typer>=0.12.5",
+    "yt-dlp>=2024.10.7",
+]
 
 [project.scripts]
 hello = "ytxd:hello"
