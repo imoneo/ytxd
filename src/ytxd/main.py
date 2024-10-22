@@ -9,6 +9,14 @@ from .media_formats import Resolution, VideoFormat, AudioFormat, resolution_mapp
 app = typer.Typer(rich_markup_mode="rich", no_args_is_help=True)
 
 
+def success():
+    print(rule.Rule("Download [green]completed[/green]", style="green"))
+
+
+def fail():
+    print(rule.Rule("Download [red]failed[/red]", style="red"))
+
+
 @app.command(
     help="Download [italic yellow]video[/italic yellow] from given [green bold]URL[/green bold]. [underline]Downloading from multiple urls is allowed.[/underline]"
 )
@@ -62,9 +70,9 @@ def video(
             typer.launch(str(path), locate=False)
         else:
             typer.launch(str(path), locate=True)
-        print(rule.Rule("Download [green]completed[/green]", style="green"))
+        success()
     else:
-        print(rule.Rule("Download [red]failed[/red]", style="red"))
+        fail()
 
 
 @app.command(
@@ -99,9 +107,9 @@ def audio(
             typer.launch(str(path), locate=False)
         else:
             typer.launch(str(path), locate=True)
-        print(rule.Rule("Download [green]completed[/green]", style="green"))
+        success()
     else:
-        print(rule.Rule("Download [red]failed[/red]", style="red"))
+        fail()
 
 
 # if __name__ == "__main__":
