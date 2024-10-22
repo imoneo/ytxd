@@ -17,7 +17,9 @@ YT_PLAYLIST_DEFAULT_VIDEO_NAMES = (
     "Mouse Click Sound Effects (Copyright Free).mp4",
 )
 
-video_formats = [video_format.value for video_format in ytxd.media_formats.VideoFormat]
+video_formats = tuple(
+    [video_format.value for video_format in ytxd.media_formats.VideoFormat]
+)
 
 
 # $ ytxd video <url>

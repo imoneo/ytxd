@@ -1,8 +1,12 @@
 import os
+import ytxd.media_formats as media
 
 __cwd = os.getcwd()
 
-__EXTENSIONS = (".mp4", ".mkv", ".mp3", ".flac", ".wav", ".m4a")
+audio_formats = ["." + audio.value for audio in media.AudioFormat]
+video_formats = ["." + video.value for video in media.VideoFormat]
+video_formats.extend(audio_formats)
+__EXTENSIONS = tuple(video_formats)
 
 
 def remove_media_files_and_empty_directories():

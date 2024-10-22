@@ -5,8 +5,8 @@ from rich import print
 from . import url
 from .media_formats import AudioFormat, VideoFormat, Resolution, resolution_mapping
 
-ALLOWED_VIDEO_FORMATS = [video_format.value for video_format in VideoFormat]
-ALLOWED_AUDIO_FORMAT = [audio_format.value for audio_format in AudioFormat]
+ALLOWED_VIDEO_FORMATS = tuple([video_format.value for video_format in VideoFormat])
+ALLOWED_AUDIO_FORMAT = tuple([audio_format.value for audio_format in AudioFormat])
 
 
 def define_path_and_file_format_video(

@@ -17,7 +17,9 @@ YT_PLAYLIST_DEFAULT_AUDIO_NAMES = (
     "Mouse Click Sound Effects (Copyright Free).mp3",
 )
 
-audio_formats = [audio_format.value for audio_format in ytxd.media_formats.AudioFormat]
+audio_formats = tuple(
+    [audio_format.value for audio_format in ytxd.media_formats.AudioFormat]
+)
 
 
 # $ ytxd audio <url>
