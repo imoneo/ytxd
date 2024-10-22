@@ -28,6 +28,7 @@ def test_download_audio_cwd_default():
         app,
         [
             "audio",
+            "--no-preview",
             YT_VIDEO_URL,
         ],
     )
@@ -40,7 +41,9 @@ def test_download_audio_cwd_default():
 # $ ytxd audio --format <format> <url>
 def test_download_audio_specified_format():
     for format in audio_formats:
-        result = runner.invoke(app, ["audio", "--format", format, YT_VIDEO_URL])
+        result = runner.invoke(
+            app, ["audio", "--format", format, "--no-preview", YT_VIDEO_URL]
+        )
         assert result.exit_code == 0
         assert "Download completed" in result.stdout
         assert YT_VIDEO_DEFAULT_AUDIO_NAME[:-3] + format in os.listdir()
@@ -51,7 +54,9 @@ def test_download_audio_specified_format():
 def test_download_audio_relative_path_new_directory():
     new_dir_name = "downloads"
     path_to_new_dir = os.path.join(os.getcwd(), new_dir_name)
-    result = runner.invoke(app, ["audio", "--path", new_dir_name, YT_VIDEO_URL])
+    result = runner.invoke(
+        app, ["audio", "--path", new_dir_name, "--no-preview", YT_VIDEO_URL]
+    )
     assert result.exit_code == 0
     assert "Download completed" in result.stdout
     assert new_dir_name in os.listdir()
@@ -63,7 +68,9 @@ def test_download_audio_relative_path_new_directory():
 # $ytxd audio --path < <new_name>.<extansion> > <url>
 def test_download_audio_specified_extansion():
     new_name_extansion = "effect.m4a"
-    result = runner.invoke(app, ["audio", "-o", new_name_extansion, YT_VIDEO_URL])
+    result = runner.invoke(
+        app, ["audio", "-o", new_name_extansion, "--no-preview", YT_VIDEO_URL]
+    )
     assert result.exit_code == 0
     assert "Download completed" in result.stdout
     assert new_name_extansion in os.listdir()
@@ -76,7 +83,9 @@ def test_download_audio_absolute_path_extansion():
     new_dir_name = "absolute"
     cwd = os.getcwd()
     new_path = os.path.join(os.path.join(cwd, new_dir_name), new_name_extansion)
-    result = runner.invoke(app, ["audio", "--path", new_path, YT_VIDEO_URL])
+    result = runner.invoke(
+        app, ["audio", "--path", new_path, "--no-preview", YT_VIDEO_URL]
+    )
     assert result.exit_code == 0
     assert "Download completed" in result.stdout
     assert new_dir_name in os.listdir()
@@ -86,7 +95,7 @@ def test_download_audio_absolute_path_extansion():
 
 # $ ytxd audio <playlist url>
 def test_download_audio_playlist():
-    result = runner.invoke(app, ["audio", YT_PLAYLIST_URL])
+    result = runner.invoke(app, ["audio", "--no-preview", YT_PLAYLIST_URL])
     assert result.exit_code == 0
     assert "Download failed" not in result.stdout
     for name in YT_PLAYLIST_DEFAULT_AUDIO_NAMES:
@@ -97,7 +106,9 @@ def test_download_audio_playlist():
 # $ ytxd audio -o <directory name> <playlist url>
 def test_download_audio_playlist_new_dir():
     new_dir_name = "effect"
-    result = runner.invoke(app, ["audio", "-o", new_dir_name, YT_PLAYLIST_URL])
+    result = runner.invoke(
+        app, ["audio", "-o", new_dir_name, "--no-preview", YT_PLAYLIST_URL]
+    )
     assert result.exit_code == 0
     assert new_dir_name in os.listdir()
     assert "Download failed" not in result.stdout

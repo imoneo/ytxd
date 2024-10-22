@@ -56,14 +56,18 @@ def video(
             help="the [bold yellow]best[/bold yellow] audio and video quality avaiable, [bold underline red]ignore other options[/bold underline red]",
         ),
     ] = False,
+    no_preview: Annotated[
+        bool, typer.Option("--no-preview", help="do not open file explorer for preview")
+    ] = False,
 ):
     if dependencies.check():
         for u in url:
             download.video(u, path, file_format, resolution_mapping(resolution), best)
-        if path.is_dir():
-            typer.launch(str(path), locate=False)
-        else:
-            typer.launch(str(path), locate=True)
+        if not no_preview:
+            if path.is_dir():
+                typer.launch(str(path), locate=False)
+            else:
+                typer.launch(str(path), locate=True)
         success()
     else:
         fail()
@@ -93,14 +97,18 @@ def audio(
             "--format", "--extansion", "--ext", help="Specify audio file format"
         ),
     ] = AudioFormat.mp3,
+    no_preview: Annotated[
+        bool, typer.Option("--no-preview", help="do not open file explorer for preview")
+    ] = False,
 ):
     if dependencies.check():
         for u in url:
             download.audio(u, path, file_format)
-        if path.is_dir():
-            typer.launch(str(path), locate=False)
-        else:
-            typer.launch(str(path), locate=True)
+        if not no_preview:
+            if path.is_dir():
+                typer.launch(str(path), locate=False)
+            else:
+                typer.launch(str(path), locate=True)
         success()
     else:
         fail()
