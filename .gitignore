@@ -1,4 +1,8 @@
 *__pycache__
+*.pytest_cache
+*.ruff_cache
+*.venv
+
 # audio formats
 *.mp3
 *.m4a

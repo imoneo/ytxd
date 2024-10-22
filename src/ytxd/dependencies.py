@@ -2,6 +2,9 @@ import subprocess
 
 
 def check() -> bool:
+    """
+    Check if ffmpeg is installed on machine.
+    """
     try:
         subprocess.run(
             ["ffmpeg", "-version"],

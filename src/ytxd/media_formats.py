@@ -27,6 +27,9 @@ class AudioFormat(str, Enum):
 
 # Conversion function
 def resolution_mapping(resolution: Resolution) -> str:
+    """
+    Map *resolution* string from Resolution enum to strings recognised by **yt-dlp**.
+    """
     resolution_mapping = {
         Resolution.p360: "bestvideo[height<=360]+bestaudio/best",
         Resolution.p480: "bestvideo[height<=480]+bestaudio/best",

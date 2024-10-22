@@ -2,6 +2,7 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 
 def remove_playlist_context(url: str) -> str:
+    """If *url* was copied from playlist play view, remove playlist context from *url* so later the download process could start."""
     # Parse the URL and its query parameters
     parsed_url = urlparse(url)
     query_params = parse_qs(parsed_url.query)
@@ -29,6 +30,7 @@ def remove_playlist_context(url: str) -> str:
 
 
 def is_youtube_playlist(url: str) -> bool:
+    """Check if *url* leads to playlist view."""
     parsed_url = urlparse(url)
 
     # Check if the URL is from youtube.com and the path is /playlist

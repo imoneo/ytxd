@@ -10,10 +10,12 @@ app = typer.Typer(rich_markup_mode="rich", no_args_is_help=True)
 
 
 def success():
+    """Success print statemant."""
     print(rule.Rule("Download [green]completed[/green]", style="green"))
 
 
 def fail():
+    """Download failed print statement."""
     print(rule.Rule("Download [red]failed[/red]", style="red"))
 
 
@@ -58,14 +60,6 @@ def video(
     if dependencies.check():
         for u in url:
             download.video(u, path, file_format, resolution_mapping(resolution), best)
-        # if best:
-        #     for u in url:
-        #         download.video_best(u, path, "mkv")
-        # else:
-        #     for u in url:
-        #         download.video(
-        #             u, path, file_format, resolution=resolution_mapping(resolution)
-        #         )
         if path.is_dir():
             typer.launch(str(path), locate=False)
         else:
@@ -110,7 +104,3 @@ def audio(
         success()
     else:
         fail()
-
-
-# if __name__ == "__main__":
-#     app()
