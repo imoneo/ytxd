@@ -9,9 +9,10 @@ dependencies = ["typer>=0.12.5", "yt-dlp>=2024.10.7"]
 [project.scripts]
 ytxd = "ytxd.main:app"
 
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv]
-dev-dependencies = ["ruff>=0.7.0"]
+dev-dependencies = ["pytest>=8.3.3", "ruff>=0.7.0"]

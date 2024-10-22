@@ -1,5 +1,4 @@
-/src/ytxd/__pycache__
-
+*__pycache__
 # audio formats
 *.mp3
 *.m4a
