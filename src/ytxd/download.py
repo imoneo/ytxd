@@ -62,6 +62,7 @@ def define_path_and_file_format_audio(path: Path, file_format: str, is_playlist:
 
     except Exception as e:
         print(f"An exception occured: {e}")
+        return (None, None)
 
 
 def video(
@@ -70,7 +71,7 @@ def video(
     file_format: str = VideoFormat.mp4,
     resolution: str = resolution_mapping(Resolution.p1080),
     best: bool = False,
-) -> None:
+) -> bool:
     """
     Download video or playlist from *url_adress* to *path*.
     If path contains suffix with avaiable video format, this format will overide *file_format* parameter.
@@ -82,6 +83,8 @@ def video(
     (output_path, file_format) = define_path_and_file_format_video(
         path, file_format, is_playlist
     )  # type: ignore
+    if (output_path, file_format) == (None, None):
+        return False
 
     ydl_opts = (
         {
@@ -100,13 +103,15 @@ def video(
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # info_dict = ydl.extract_info(url_adress, download=True)  # Extract and download
             ydl.extract_info(url_adress, download=True)
+        return True
     except Exception as e:
         print(f"Download error: {e}")
+        return False
 
 
 def audio(
     url_adress: str, path: Path = Path.cwd(), audio_format: str = AudioFormat.mp3
-) -> None:
+) -> bool:
     """
     Download audio track from *url_adress* leading to single video or playlist.
     If *path* parameter contains suffix with valid file format, this format will overide *file_format* parameter.
@@ -118,6 +123,8 @@ def audio(
         path, audio_format, is_playlist
     )  # type: ignore
 
+    if (output_path, audio_format) == (None, None):
+        return False
     ydl_opts = {
         "format": "bestaudio/best",  # Download the best available audio
         "outtmpl": str(output_path),
@@ -133,6 +140,8 @@ def audio(
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.extract_info(url_adress, download=True)
+        return True
 
     except Exception as e:
         print(f"Error: {e}")
+        return False

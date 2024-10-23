@@ -9,27 +9,27 @@ from .media_formats import Resolution, VideoFormat, AudioFormat, resolution_mapp
 app = typer.Typer(rich_markup_mode="rich", no_args_is_help=True)
 
 
-def success():
-    """Success print statemant."""
+def success() -> None:
+    """Success print statement."""
     print(rule.Rule("Download [green]completed[/green]", style="green"))
 
 
-def fail():
+def fail() -> None:
     """Download failed print statement."""
     print(rule.Rule("Download [red]failed[/red]", style="red"))
 
 
 @app.command(
-    help="Download [italic yellow]video[/italic yellow] from given [green bold]URL[/green bold]. [underline]Downloading from multiple urls is allowed.[/underline]"
+    help="Download [italic yellow]video[/italic yellow] from given [green bold]URL[/green bold]. [underline]Downloading from multiple URLs is allowed.[/underline]"
 )
 def video(
-    url: Annotated[list[str], typer.Argument(help="video url")],
+    url: Annotated[list[str], typer.Argument(help="Video URL")],
     path: Annotated[
         Path,
         typer.Option(
             "-o",
             "--path",
-            help="path to downloaded video or playlist, if not declared save to current working directory",
+            help="Path to the downloaded video or playlist. If not declared, save to the current working directory.",
         ),
     ] = Path.cwd(),
     resolution: Annotated[
@@ -37,7 +37,7 @@ def video(
         typer.Option(
             "--resolution",
             "--res",
-            help="video [bold green]resolution[/bold green], if not avaiable the next close to decalred",
+            help="Video [bold green]resolution[/bold green]. If not available, the next closest resolution is used.",
         ),
     ] = Resolution.p1080,
     file_format: Annotated[
@@ -46,41 +46,44 @@ def video(
             "--format",
             "--extension",
             "--ext",
-            help="video file [bold green]format[/bold green] if avaiable, otherwise download other",
+            help="Video file [bold green]format[/bold green]. If not available, another format will be downloaded.",
         ),
     ] = VideoFormat.mp4,
     best: Annotated[
         bool,
         typer.Option(
             "--best",
-            help="the [bold yellow]best[/bold yellow] audio and video quality avaiable, [bold underline red]ignore other options[/bold underline red]",
+            help="Download the [bold yellow]best[/bold yellow] audio and video quality available. [bold underline red]Ignores other options.[/bold underline red]",
         ),
     ] = False,
     no_preview: Annotated[
-        bool, typer.Option("--no-preview", help="do not open file explorer for preview")
+        bool,
+        typer.Option("--no-preview", help="Do not open file explorer for preview."),
     ] = False,
 ):
-    if dependencies.check():
-        for u in url:
-            download.video(u, path, file_format, resolution_mapping(resolution), best)
-        if not no_preview:
-            if path.is_dir():
-                typer.launch(str(path), locate=False)
-            else:
-                typer.launch(str(path), locate=True)
-        success()
-    else:
+    if not dependencies.check():
         fail()
+        return
+    for u in url:
+        if not download.video(
+            u, path, file_format, resolution_mapping(resolution), best
+        ):
+            fail()
+            return
+    if not no_preview:
+        locate = not path.is_dir()
+        typer.launch(str(path), locate=locate)
+    success()
 
 
 @app.command(
-    help="Download [underline]only[/underline] [italic yellow]audio[/italic yellow] from given [green bold]URL[/green bold]. [underline]Downloading from multiple urls is allowed.[/underline]"
+    help="Download [underline]only[/underline] [italic yellow]audio[/italic yellow] from the given [green bold]URL[/green bold]. [underline]Downloading from multiple URLs is allowed.[/underline]"
 )
 def audio(
     url: Annotated[
         list[str],
         typer.Argument(
-            help="Download and extract audio from given url. Playlist [bold green]urls[/bold green] allowed."
+            help="Download and extract audio from the given URL. Playlist [bold green]URLs[/bold green] are allowed."
         ),
     ],
     path: Annotated[
@@ -88,27 +91,28 @@ def audio(
         typer.Option(
             "-o",
             "--path",
-            help="path to downloaded audio file or playlist, if not declared save to current working directory",
+            help="Path to save the downloaded audio file or playlist. If not provided, saves to the current working directory.",
         ),
     ] = Path.cwd(),
     file_format: Annotated[
         AudioFormat,
         typer.Option(
-            "--format", "--extansion", "--ext", help="Specify audio file format"
+            "--format", "--extension", "--ext", help="Specify the audio file format."
         ),
     ] = AudioFormat.mp3,
     no_preview: Annotated[
-        bool, typer.Option("--no-preview", help="do not open file explorer for preview")
+        bool,
+        typer.Option("--no-preview", help="Do not open file explorer for preview."),
     ] = False,
 ):
-    if dependencies.check():
-        for u in url:
-            download.audio(u, path, file_format)
-        if not no_preview:
-            if path.is_dir():
-                typer.launch(str(path), locate=False)
-            else:
-                typer.launch(str(path), locate=True)
-        success()
-    else:
+    if not dependencies.check():
         fail()
+        return
+    for u in url:
+        if not download.audio(u, path, file_format):
+            fail()
+            return
+    if not no_preview:
+        locate = not path.is_dir()
+        typer.launch(str(path), locate=locate)
+    success()
