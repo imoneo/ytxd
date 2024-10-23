@@ -116,3 +116,26 @@ def audio(
         locate = not path.is_dir()
         typer.launch(str(path), locate=locate)
     success()
+
+
+@app.command(help="Retrieve information about video or videos from url.")
+def info(
+    url: Annotated[list[str], typer.Argument(help="Url to video or playlist.")],
+    path: Annotated[
+        Path, typer.Option("-o", "--path", help="specify where to save informations")
+    ] = Path.cwd(),
+    preview: Annotated[
+        bool, typer.Option("--no-preview", help="do not open file explorer for preview")
+    ] = False,
+):
+    if dependencies.check():
+        for u in url:
+            download.info(u, path)
+            if preview:
+                if path.is_dir():
+                    typer.launch(str(path), locate=False)
+                else:
+                    typer.launch(str(path), locate=True)
+        success()
+    else:
+        fail()

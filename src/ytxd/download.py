@@ -1,6 +1,8 @@
+import json
 import yt_dlp
 from pathlib import Path
 from rich import print
+from slugify import slugify
 
 from . import url
 from .media_formats import AudioFormat, VideoFormat, Resolution, resolution_mapping
@@ -145,3 +147,18 @@ def audio(
     except Exception as e:
         print(f"Error: {e}")
         return False
+
+
+# TO-DO
+def info(url_adress: str, path: Path = Path.cwd()):
+    """Retrieve information about video from *url_adress* into json file."""
+    try:
+        ydl_opts = {}
+        info_dict = {}
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # Extracting video information
+            info_dict = ydl.extract_info(url_adress, download=False)
+        with open(f"{slugify(info_dict['title'])}.json", "w") as file:
+            json.dump(info_dict, file)
+    except Exception as e:
+        print(f"An error occured:{e}")
