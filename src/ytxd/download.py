@@ -149,8 +149,26 @@ def audio(
         return False
 
 
-# TO-DO
-def info(url_adress: str, path: Path = Path.cwd()):
+def define_path_informations(path: Path, filename: str) -> Path:
+    """Create a path for json file with name that is valid."""
+    try:
+        json_file_name = f"{slugify(filename)}.json"
+        if path.is_absolute():
+            if path.is_dir() and not path.exists():
+                path.mkdir()
+                return path / json_file_name
+
+        # reduce to file
+        if not path.is_dir():
+            output_path = Path.cwd() / path.with_suffix(".json")
+            return output_path
+
+        return path / json_file_name
+    except Exception as e:
+        print(f"An exception occured in define_path_informations(): {e}")
+
+
+def info(url_adress: str, path: Path = Path.cwd) -> bool:
     """Retrieve information about video from *url_adress* into json file."""
     try:
         ydl_opts = {}
@@ -158,7 +176,11 @@ def info(url_adress: str, path: Path = Path.cwd()):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Extracting video information
             info_dict = ydl.extract_info(url_adress, download=False)
-        with open(f"{slugify(info_dict['title'])}.json", "w") as file:
+
+        output_path = define_path_informations(path, info_dict["title"])
+        with open(str(output_path), "w") as file:
             json.dump(info_dict, file)
+        return True
     except Exception as e:
-        print(f"An error occured:{e}")
+        print(f"An error occured in info(): {e}")
+        return False

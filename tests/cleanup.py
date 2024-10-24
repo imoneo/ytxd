@@ -3,10 +3,14 @@ import ytxd.media_formats as media
 
 __cwd = os.getcwd()
 
+extensions = []
 audio_formats = ["." + audio.value for audio in media.AudioFormat]
+extensions.extend(audio_formats)
 video_formats = ["." + video.value for video in media.VideoFormat]
-video_formats.extend(audio_formats)
-__EXTENSIONS = tuple(video_formats)
+extensions.extend(video_formats)
+json = ".json"
+extensions.append(json)
+__EXTENSIONS = tuple(extensions)
 
 
 def remove_media_files_and_empty_directories():
