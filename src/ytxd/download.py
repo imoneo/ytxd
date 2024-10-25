@@ -159,19 +159,33 @@ def audio(
         return False
 
 
-def define_path_informations(path: Path, filename: str) -> Path:
+def define_path_informations(path: Path, filename: str) -> Path | None:
     """Create a path for json file with name that is valid."""
     try:
         json_file_name = f"{slugify(filename)}.json"
-        if path.is_absolute():
-            if path.is_dir() and not path.exists():
-                path.mkdir()
-                return path / json_file_name
+        path = path.expanduser()  # expand '~' if necessary
 
-        # reduce to file
-        if not path.is_dir():
-            output_path = Path.cwd() / path.with_suffix(".json")
+        if path.is_absolute():
+            if path.suffix == "" and not path.is_dir():
+                path.mkdir(parents=True, exist_ok=False)
+                return path / json_file_name
+            if path.suffix != "" and not path.exists():
+                parent_dir = path.parent
+                parent_dir.mkdir(
+                    parents=True,
+                    exist_ok=True,
+                )
+                return path.with_suffix(".json")
+
+        # path is relative, dir does not exist
+        if path.suffix == "" and not path.is_dir():
+            new_dir_path = Path.cwd() / path
+            new_dir_path.mkdir(parents=True, exist_ok=False)
+            output_path = new_dir_path / json_file_name
             return output_path
+
+        if path.suffix != "":
+            return path.with_suffix(".json")
 
         return path / json_file_name
     except Exception as e:
@@ -179,7 +193,7 @@ def define_path_informations(path: Path, filename: str) -> Path:
         logging.error(f"define_path_informations(); path: {path}, filename: {filename}")
 
 
-def info(url_adress: str, path: Path = Path.cwd) -> bool:
+def info(url_adress: str, path: Path = Path.cwd()) -> bool:
     """Retrieve information about video from *url_adress* into json file."""
     try:
         ydl_opts = {}
@@ -188,10 +202,13 @@ def info(url_adress: str, path: Path = Path.cwd) -> bool:
             # Extracting video information
             info_dict = ydl.extract_info(url_adress, download=False)
 
+        if info_dict is None:
+            raise ValueError("Failed to retrieve video information: info_dict is None")
         output_path = define_path_informations(path, info_dict["title"])
         with open(str(output_path), "w") as file:
             json.dump(info_dict, file)
         return True
     except Exception as e:
         print(f"An error occured: {e}")
+        logging.error(f"info(); url_adress: {url_adress} ,path: {path}")
         return False

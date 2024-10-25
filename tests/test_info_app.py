@@ -32,27 +32,39 @@ def test_download_info_relative_path():
     assert "Download completed" in result.stdout
 
 
-# $ ytxd info --path <downloads> <url>
+# $ ytxd info --path <downloads/> <url>
 def test_download_info_relative_new_dir_path():
-    new_name = "downloads"
+    new_dir_name = "downloads/"
     result = runner.invoke(
-        app, ["info", "--no-preview", "--path", new_name, YT_VIDEO_URL]
+        app, ["info", "--no-preview", "--path", new_dir_name, YT_VIDEO_URL]
     )
     assert result.exit_code == 0
-    assert f"{new_name}.json" in os.listdir()
+    assert JSON_FILENAME in os.listdir(new_dir_name)
     assert "Download completed" in result.stdout
     cleanup.remove_media_files_and_empty_directories()
 
 
-# $ ytxd info --path <absolute path with suffix> <url>
+# $ ytxd info --path <absolute path (not existing) with suffix> <url>
 def test_download_info_absolute_path_suffix():
     name_with_suffix = "suffix.txt"
-    abs_path = os.path.join(os.getcwd(), name_with_suffix)
+    not_existing_dirname = "suffix/"
+    abs_path = os.path.join(os.getcwd(), not_existing_dirname + name_with_suffix)
     result = runner.invoke(
         app,
         ["info", "--no-preview", "--path", abs_path, YT_VIDEO_URL],
     )
     assert result.exit_code == 0
-    assert f"{name_with_suffix[:-3]}json" in os.listdir()
+    assert f"{name_with_suffix[:-3]}json" in os.listdir(not_existing_dirname)
+    assert "Download completed" in result.stdout
+    cleanup.remove_media_files_and_empty_directories()
+
+
+# $ ytxd info --path <absolute path to existing dir> <url>
+def test_download_info_existing_absolute_path_to_dir():
+    path = os.path.join(os.getcwd(), "new-dir-name")
+    os.makedirs(path)
+    result = runner.invoke(app, ["info", "--no-preview", "--path", path, YT_VIDEO_URL])
+    assert result.exit_code == 0
+    assert JSON_FILENAME in os.listdir(path)
     assert "Download completed" in result.stdout
     cleanup.remove_media_files_and_empty_directories()
