@@ -7,6 +7,8 @@ from slugify import slugify
 from . import url
 from .media_formats import AudioFormat, VideoFormat, Resolution, resolution_mapping
 
+import logging
+
 ALLOWED_VIDEO_FORMATS = tuple([video_format.value for video_format in VideoFormat])
 ALLOWED_AUDIO_FORMAT = tuple([audio_format.value for audio_format in AudioFormat])
 
@@ -37,6 +39,9 @@ def define_path_and_file_format_video(
 
     except Exception as e:
         print(f"An exception occured: {e}")
+        logging.error(
+            f"define_path_and_file_format_video(); path: {path}, file_format: {file_format}, is_playlist: {is_playlist}"
+        )
         return (None, None)
 
 
@@ -64,6 +69,9 @@ def define_path_and_file_format_audio(path: Path, file_format: str, is_playlist:
 
     except Exception as e:
         print(f"An exception occured: {e}")
+        logging.error(
+            f"define_path_and_file_format_audio(); path: {path}, file_format: {file_format}, is_playlist: {is_playlist}"
+        )
         return (None, None)
 
 
@@ -108,6 +116,7 @@ def video(
         return True
     except Exception as e:
         print(f"Download error: {e}")
+        logging.error("video()")
         return False
 
 
@@ -146,6 +155,7 @@ def audio(
 
     except Exception as e:
         print(f"Error: {e}")
+        logging.error("audio()")
         return False
 
 
@@ -165,7 +175,8 @@ def define_path_informations(path: Path, filename: str) -> Path:
 
         return path / json_file_name
     except Exception as e:
-        print(f"An exception occured in define_path_informations(): {e}")
+        print(f"An exception occured: {e}")
+        logging.error(f"define_path_informations(); path: {path}, filename: {filename}")
 
 
 def info(url_adress: str, path: Path = Path.cwd) -> bool:
@@ -182,5 +193,5 @@ def info(url_adress: str, path: Path = Path.cwd) -> bool:
             json.dump(info_dict, file)
         return True
     except Exception as e:
-        print(f"An error occured in info(): {e}")
+        print(f"An error occured: {e}")
         return False
