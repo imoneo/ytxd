@@ -25,6 +25,8 @@ $ ytxd video --best <video-url>
 $ ytxd video --resolution 720p --format flac --path ~/Downloads <video-url>
 ```
 
+![usage-example-1729975255462](https://github.com/user-attachments/assets/3e80ae19-9d80-4258-a810-6676766a96fc)
+
 ## Installation
 
 **_ytxd_** is avaiable on _PyPI_:
