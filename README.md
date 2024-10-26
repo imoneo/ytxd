@@ -1,4 +1,4 @@
-# **Y**ou**T**ube **X** **D**ownload (**_ytxd_**)
+# **Y**ou**T**ube **X** **D**ownload (**_YTXD_**)
 
 An easy to use wrapper around [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) CLI.
 
@@ -15,7 +15,7 @@ $ ytxd video <video-url>
 # download audio score of video to current working directory
 $ ytxd audio <video-url>
 
-# download video or audio to selected path with selected extansion, path can be relative
+# download video or audio to path with given extansion and filename, path can be relative
 $ ytxd video -o Videos/clip.mkv <video-url>
 
 # download best quality avaiable
