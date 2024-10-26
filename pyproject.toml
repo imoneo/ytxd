@@ -1,9 +1,11 @@
 [project]
 name = "ytxd"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.0.1"
+description = "A user-friendly cli tool for downloading video and audio from url. YTXD is wrapper around the yt-dlp."
 readme = "README.md"
+authors = [{ name="Mateusz Gancarek", email="mateusz.gancarek@outlook.com" }]
 requires-python = ">=3.12"
+license = { file="LICENSE"}
 dependencies = [
     "python-slugify>=8.0.4",
     "typer>=0.12.5",
@@ -13,10 +15,6 @@ dependencies = [
 [project.scripts]
 ytxd = "ytxd.main:app"
 
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = ["pytest>=8.3.3", "ruff>=0.7.0"]

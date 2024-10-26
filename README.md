@@ -54,7 +54,7 @@ $ sudo apt-get update && sudo apt-get install ffmpeg
 ### Recomendation
 
 I suggest to use **_ytxd_** via [`uv`](https://docs.astral.sh/uv/), an extremely fast Python package and project manager, written in Rust..
-After installing `uv` from [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/), **_ytxd_** can be used by typing command:
+After following guide and installing `uv` from [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/), **_ytxd_** can be used by typing command:
 
 ```bash
 uvx ytxd --help
