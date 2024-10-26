@@ -11,6 +11,10 @@ dependencies = [
     "typer>=0.12.5",
     "yt-dlp>=2024.10.7",
 ]
+keywords = ["audio", "cli", "downloader", "video", "ffmpeg", "youtube-dl", "typer", "uv", "yt-dlp"]
+
+[project.urls]
+Homepage = "https://github.com/imoneo/ytxd"
 
 [project.scripts]
 ytxd = "ytxd.main:app"

@@ -16,3 +16,7 @@
 
 # dictionary info file format
 *.json
+
+# build related
+src/ytxd.egg-info
+dist/
